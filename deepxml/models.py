@@ -29,6 +29,7 @@ class Model(object):
 
     """
     def __init__(self, network, model_path, gradient_clip_value=5.0, device_ids=None, **kwargs):
+        print()
         self.model = nn.DataParallel(network(**kwargs).cuda(), device_ids=device_ids)
         self.loss_fn = nn.BCEWithLogitsLoss()
         self.model_path, self.state = model_path, {}
@@ -53,6 +54,7 @@ class Model(object):
             return torch.sigmoid(scores).cpu(), labels.cpu()
 
     def get_optimizer(self, **kwargs):
+        
         self.optimizer = DenseSparseAdam(self.model.parameters(), **kwargs)
 
     def train(self, train_loader: DataLoader, valid_loader: DataLoader, opt_params: Optional[Mapping] = None,
@@ -101,8 +103,7 @@ class Model(object):
             total_norm = torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm * self.gradient_clip_value)
             self.gradient_norm_queue.append(min(total_norm, max_norm * 2.0, 1.0))
             if total_norm > max_norm * self.gradient_clip_value:
-                logger.warn(F'Clipping gradients with total norm {round(total_norm, 5)} '
-                            F'and max norm {round(max_norm, 5)}')
+                logger.warn(F'Clipping gradients with total norm')
 
     def swa_init(self):
         if 'swa' not in self.state:

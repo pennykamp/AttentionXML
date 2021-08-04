@@ -39,7 +39,7 @@ class AttentionRNN(Network):
 
     def forward(self, inputs, **kwargs):
         emb_out, lengths, masks = self.emb(inputs, **kwargs)
-        rnn_out = self.lstm(emb_out, lengths)   # N, L, hidden_size * 2
+        rnn_out = self.lstm(emb_out, lengths.cpu())   # N, L, hidden_size * 2
         attn_out = self.attention(rnn_out, masks)      # N, labels_num, hidden_size * 2
         return self.linear(attn_out)
 
