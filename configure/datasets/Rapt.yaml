@@ -1,0 +1,22 @@
+name: Rapt
+
+train:
+  texts: rapt/train_text.npy
+  labels: rapt/train_labels.npy
+
+valid:
+  size: 200
+
+test:
+  texts: rapt/test_text.npy
+
+embedding:
+  emb_init: rapt/emb_init.npy
+
+output:
+  res: results
+
+labels_binarizer: rapt/labels_binarizer
+
+model:
+  emb_size: 300
