@@ -44,9 +44,12 @@ def main(data_cnf, model_cnf, mode, tree_id):
             train_x, valid_x, train_labels, valid_labels = train_test_split(train_x, train_labels,
                                                                             test_size=data_cnf['valid']['size'],
                                                                             random_state=random_state)
+            
+            valid_labels = valid_labels.reshape(valid_labels.size)
+            train_labels = train_labels.reshape(train_labels.size)
         else:
             valid_x, valid_labels = get_data(data_cnf['valid']['texts'], data_cnf['valid']['labels'])
-        mlb = get_mlb(data_cnf['labels_binarizer'], np.hstack((train_labels, valid_labels)))
+        mlb = get_mlb(data_cnf['labels_binarizer'], np.hstack((train_labels.squeeze(), valid_labels.squeeze())))
         train_y, valid_y = mlb.transform(train_labels), mlb.transform(valid_labels)
         labels_num = len(mlb.classes_)
         logger.info(F'Number of Labels: {labels_num}')
