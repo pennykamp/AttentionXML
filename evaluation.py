@@ -26,15 +26,15 @@ def main(results, targets, train_labels, a, b):
     res, targets = np.load(results, allow_pickle=True), np.load(targets, allow_pickle=True)
     mlb = MultiLabelBinarizer(sparse_output=True)
     targets = mlb.fit_transform(targets)
-    print('Precision@1,3,5:', get_p_1(res, targets, mlb), get_p_3(res, targets, mlb), get_p_5(res, targets, mlb))
-    print('nDCG@1,3,5:', get_n_1(res, targets, mlb), get_n_3(res, targets, mlb), get_n_5(res, targets, mlb))
+    print('Precision@1,2,3:', get_p_1(res, targets, mlb), get_p_2(res, targets, mlb), get_p_3(res, targets, mlb), )
+    print('nDCG@1,2,3:', get_n_1(res, targets, mlb), get_n_2(res, targets, mlb), get_n_3(res, targets, mlb) )
     if train_labels is not None:
         train_labels = np.load(train_labels, allow_pickle=True)
         inv_w = get_inv_propensity(mlb.transform(train_labels), a, b)
-        print('PSPrecision@1,3,5:', get_psp_1(res, targets, inv_w, mlb), get_psp_3(res, targets, inv_w, mlb),
-              get_psp_5(res, targets, inv_w, mlb))
-        print('PSnDCG@1,3,5:', get_psndcg_1(res, targets, inv_w, mlb), get_psndcg_3(res, targets, inv_w, mlb),
-              get_psndcg_5(res, targets, inv_w, mlb))
+        print('PSPrecision@1,2,3:', get_psp_1(res, targets, inv_w, mlb), get_psp_2(res, targets, inv_w, mlb), 
+            get_psp_3(res, targets, inv_w, mlb))
+        print('PSnDCG@1,2,3:', get_psndcg_1(res, targets, inv_w, mlb), get_psndcg_2(res, targets, inv_w, mlb), 
+        get_psndcg_3(res, targets, inv_w, mlb))
 
 
 if __name__ == '__main__':

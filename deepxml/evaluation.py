@@ -13,11 +13,11 @@ from sklearn.preprocessing import MultiLabelBinarizer
 from typing import Union, Optional, List, Iterable, Hashable
 
 
-__all__ = ['get_precision', 'get_p_1', 'get_p_3', 'get_p_5', 'get_p_10',
-           'get_ndcg', 'get_n_1', 'get_n_3', 'get_n_5', 'get_n_10',
+__all__ = ['get_precision', 'get_p_1', 'get_p_2', 'get_p_3', 'get_p_5', 'get_p_10',
+           'get_ndcg', 'get_n_1','get_n_2', 'get_n_3', 'get_n_5', 'get_n_10',
            'get_inv_propensity', 'get_psp',
-           'get_psp_1', 'get_psp_3', 'get_psp_5', 'get_psp_10',
-           'get_psndcg_1', 'get_psndcg_3', 'get_psndcg_5', 'get_psndcg_10']
+           'get_psp_1','get_psp_2', 'get_psp_3', 'get_psp_5', 'get_psp_10',
+           'get_psndcg_1','get_psndcg_2', 'get_psndcg_3', 'get_psndcg_5', 'get_psndcg_10']
 
 TPredict = np.ndarray
 TTarget = Union[Iterable[Iterable[Hashable]], csr_matrix]
@@ -47,6 +47,7 @@ def get_precision(prediction: TPredict, targets: TTarget, mlb: TMlb = None, clas
 
 
 get_p_1 = partial(get_precision, top=1)
+get_p_2 = partial(get_precision, top=2)
 get_p_3 = partial(get_precision, top=3)
 get_p_5 = partial(get_precision, top=5)
 get_p_10 = partial(get_precision, top=10)
@@ -65,6 +66,7 @@ def get_ndcg(prediction: TPredict, targets: TTarget, mlb: TMlb = None, classes: 
 
 
 get_n_1 = partial(get_ndcg, top=1)
+get_n_2 = partial(get_ndcg, top=2)
 get_n_3 = partial(get_ndcg, top=3)
 get_n_5 = partial(get_ndcg, top=5)
 get_n_10 = partial(get_ndcg, top=10)
@@ -90,6 +92,7 @@ def get_psp(prediction: TPredict, targets: TTarget, inv_w: np.ndarray, mlb: TMlb
 
 
 get_psp_1 = partial(get_psp, top=1)
+get_psp_2 = partial(get_psp, top=2)
 get_psp_3 = partial(get_psp, top=3)
 get_psp_5 = partial(get_psp, top=5)
 get_psp_10 = partial(get_psp, top=10)
@@ -113,6 +116,7 @@ def get_psndcg(prediction: TPredict, targets: TTarget, inv_w: np.ndarray, mlb: T
 
 
 get_psndcg_1 = partial(get_psndcg, top=1)
+get_psndcg_2 = partial(get_psndcg, top=2)
 get_psndcg_3 = partial(get_psndcg, top=3)
 get_psndcg_5 = partial(get_psndcg, top=5)
 get_psndcg_10 = partial(get_psndcg, top=10)
