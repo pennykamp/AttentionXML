@@ -17,5 +17,6 @@ valid:
 
 predict:
   batch_size: 40
+  predict: 3
 
 path: models

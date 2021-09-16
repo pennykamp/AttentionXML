@@ -84,6 +84,7 @@ def main(data_cnf, model_cnf, mode, tree_id):
             if model is None:
                 model = Model(network=AttentionRNN, labels_num=labels_num, model_path=model_path, emb_init=emb_init,
                               **data_cnf['model'], **model_cnf['model'])
+            print(f'I will attempt to predict'{k=model_cnf['predict'].get('k', 100)})
             scores, labels = model.predict(test_loader, k=model_cnf['predict'].get('k', 100))
         else:
             if model is None:
