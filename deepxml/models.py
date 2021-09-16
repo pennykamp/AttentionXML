@@ -16,7 +16,7 @@ from tqdm import tqdm
 from logzero import logger
 from typing import Optional, Mapping, Tuple
 
-from deepxml.evaluation import get_p_5, get_n_5
+from deepxml.evaluation import get_p_3, get_n_3
 from deepxml.modules import *
 from deepxml.optimizers import *
 
@@ -60,7 +60,7 @@ class Model(object):
     def train(self, train_loader: DataLoader, valid_loader: DataLoader, opt_params: Optional[Mapping] = None,
               nb_epoch=100, step=100, k=5, early=50, verbose=True, swa_warmup=None, **kwargs):
         self.get_optimizer(**({} if opt_params is None else opt_params))
-        global_step, best_n5, e = 0, 0.0, 0
+        global_step, best_n3, e = 0, 0.0, 0
         for epoch_idx in range(nb_epoch):
             if epoch_idx == swa_warmup:
                 self.swa_init()
@@ -72,10 +72,10 @@ class Model(object):
                     self.swap_swa_params()
                     labels = np.concatenate([self.predict_step(valid_x, k)[1] for valid_x in valid_loader])
                     targets = valid_loader.dataset.data_y
-                    p5, n5 = get_p_5(labels, targets), get_n_5(labels, targets)
-                    if n5 > best_n5:
+                    p3, n3 = get_p_3(labels, targets), get_n_3(labels, targets)
+                    if n3 > best_n3:
                         self.save_model()
-                        best_n5, e = n5, 0
+                        best_n3, e = n3, 0
                     else:
                         e += 1
                         if early is not None and e > early:
@@ -83,7 +83,7 @@ class Model(object):
                     self.swap_swa_params()
                     if verbose:
                         logger.info(F'{epoch_idx} {i * train_loader.batch_size} train loss: {round(loss, 5)} '
-                                    F'P@5: {round(p5, 5)} nDCG@5: {round(n5, 5)} early stop: {e}')
+                                    F'P@5: {round(p3, 5)} nDCG@5: {round(n3, 5)} early stop: {e}')
 
     def predict(self, data_loader: DataLoader, k=100, desc='Predict', **kwargs):
         self.load_model()
