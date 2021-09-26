@@ -19,4 +19,4 @@ output:
 labels_binarizer: rapt/labels_binarizer
 
 model:
-  emb_size: 300
+  emb_size: 100
